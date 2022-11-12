@@ -16,33 +16,65 @@ def parkinglot_list(request):
 
 
 def info(request,id):
+    parkinglot = Parkinglot.objects.get(id=id)
+    #cus = get_object_or_404(Parkinglot, id=id).customer
+    #cus = cus.values()
+
+    slot = Slot.objects.filter(parking=parkinglot)
     
-    tr = get_object_or_404(Parkinglot, id=id).customer
-    cu = tr.values()
-    
-    return render(request, 'parkinglot/park_info.html',{"customer": cu})
+    return render(request, 'parkinglot/park_info.html',{"slot":slot})
 
 def about(request):
     return HttpResponse("About Page")
 
+def createParking(request):
+    
+    if request.method == 'POST':
+        form = createParkingLotForm(request.POST, request.FILES)
+        if form.is_valid():
+            name = request.POST['name']
+            max_slot = request.POST['max_slot']
+            newPark = Parkinglot.objects.create(name=name,max_slot=max_slot,availiable=max_slot)
+            #form.save()
+            i=1
+            while i <= int(max_slot):
+                Slot.objects.create(parking=newPark,name=f"parking #{i}")
+                i = i + 1   
+            return HttpResponseRedirect(reverse("parking_lot:list"))
+    else:
+        form = createParkingLotForm()
+    return render(request, 'parkinglot/create_park.html', {'form': form})
+
 
 def booking(request,id):
-    owned_park = Parkinglot.objects.get(id=id)
-    print(owned_park.availiable)
-    slot = []
-    i = 1
-    while i <= owned_park.availiable:
-        slot.append(f"parking #{i}")
-        i = i + 1
-
+    free = get_object_or_404(Parkinglot, id=id).max_slot
+    parking = Parkinglot.objects.get(id=id)
+    slot = Slot.objects.filter(parking=parking,status=True)
+    box = []
+    for i in slot:
+        box.append(i)
+        print("dddd",i)
+    x = box[0]
+    setStatus = Slot.objects.filter(id=x.id)
+    setStatus.update(status=False)
+    print(x)
     if request.method == 'POST':
+        owned_park = Parkinglot.objects.get(id=id)
+
         form = customerForm(request.POST, request.FILES)
+    
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse("parking_lot:booking"))
+            name = request.POST["name"]
+            tel = request.POST["tel"]
+            c = Customer.objects.create(name=name,tel=tel,slot=x)
+            #owned_park.customer.add(c)
+            owned_park.save()
+            #form.save()
+            return HttpResponseRedirect(reverse("parking_lot:list"))
     else:
         form = customerForm()
-    return render(request, 'parkinglot/booking.html', {'form': form,'ava':owned_park.availiable,'slot':slot})
+        
+    return render(request, 'parkinglot/booking.html', {'form': form,'id':id})
     
 
 """

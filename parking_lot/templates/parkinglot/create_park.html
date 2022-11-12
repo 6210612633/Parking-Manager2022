@@ -1,24 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Car Park</title>
+    <title>Create New Car Park</title>
 </head>
 <body>
-    <h1>Booking</h1>
+    <h1>Create New Car Park</h1>
    <div>
     <form method="POST" action="." enctype="multipart/form-data">
         <div class="container">{% csrf_token %}
             {{ form.as_p}}
+            
             <button type="submit" class="btn btn-primary">Save</button>
         </div>
     </form>
-    {% for x in slot %}
-        {% if x.status == False %}
-            <div> {{x}} &#9888</div>
-        {% else %}
-            <div> {{x}} &#128221</div>
-        {% endif %}
-    {% endfor %}
+
    </div>
 
 </body>

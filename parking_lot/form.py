@@ -9,3 +9,17 @@ class customerForm(ModelForm):
         fields = ['name','tel']
 
 
+class createParkingLotForm(ModelForm):
+    class Meta:
+        model = Parkinglot 
+        fields = ['name','max_slot']
+
+"""
+class slotForm(forms.Form):
+    select = forms.CharField(label='Slot', max_length=100)
+
+class slotForm(ModelForm):
+    class Meta:
+        model = Slot
+        fields = ['who','name']
+"""
