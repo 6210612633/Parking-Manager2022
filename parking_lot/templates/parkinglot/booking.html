@@ -12,13 +12,11 @@
             <button type="submit" class="btn btn-primary">Save</button>
         </div>
     </form>
-    {% for x in slot %}
-        {% if x.status == False %}
-            <div> {{x}} &#9888</div>
-        {% else %}
-            <div> {{x}} &#128221</div>
-        {% endif %}
-    {% endfor %}
+    {{slot}}
+
+    <div>stautus{{status}}</div>
+    <div>ปุ่มไปหน้าจ่ายตัง เด๋วลิงค์</div>
+    <div>{{slotid}}</div>
    </div>
 
 </body>

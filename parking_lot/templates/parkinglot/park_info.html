@@ -6,10 +6,11 @@
 <body>
     <h1>Car Park</h1>
     {% for i in slot %}
-        <li>{{i}} --> status = {{i.status}}</li>
+        <li>{{i}} --> status = {{i.status}} == {{i.customer}}</li>
     {% endfor %}
     {% for x in customer %}
         <li>customer = {{ x.name }} parking at ... tel {{ x.tel }}</li>
     {% endfor %}
+    {{x}}
 </body>
 </html>

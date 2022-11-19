@@ -8,7 +8,9 @@
     <div><p hidden id = "lat">{{lat}}</p></div>
     <div><p hidden id = "lon">{{lon}}</p></div>
     <div><p hidden id = "id">{{id}}</p></div>
-    <div><p hidden id = "id_car">{{id_car}}</p></div>
+    
+
+    
 </body>
 </html>
 
@@ -27,8 +29,8 @@
 
         var server_lat = document.getElementById("lat").innerHTML;
         var server_lon = document.getElementById("lon").innerHTML;
-        var id_car = document.getElementById("id_car").innerHTML;
-
+        
+        var id = document.getElementById("id").innerHTML;
         /*if (lat == server_lat && lon == server_lon) {
             alert("You are in the park!");
         } else {
@@ -38,7 +40,7 @@
 
         if (0 <= parseFloat(lat) - parseFloat(server_lat) <= 3 ){
             alert("You are in the park!");
-            window.location.replace((window.location.href)+"book/"+ "id_car");
+            window.location.replace("http://localhost:8000/parking/"+id+"/booking/");
         } else {
             alert("You are not in the park!");
         }

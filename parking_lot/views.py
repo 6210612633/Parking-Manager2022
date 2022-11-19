@@ -1,3 +1,4 @@
+
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Parkinglot, Customer
@@ -7,13 +8,14 @@ from .form import *
 from django.urls import reverse
 from requests import get 
 import json
+from datetime import datetime
 
 # Create your views here.
 
-id_car = 0 
+
 
 def one_button_book(request,id):
-    global id_car
+    
     parking = Parkinglot.objects.get(id=id)
     parking_lat = parking.lat
     #parking_lon = parking.lon
@@ -21,32 +23,28 @@ def one_button_book(request,id):
     location = location.json()
     location_lat = location["lat"]
     location_lon = location["lon"]
-    id_car += 1 
-    
+
+    print(id)
+    print(location) 
     print(type(location))
-    return render(request, 'parkinglot/one_button_page.html',{'lat':location_lat,'lon':location_lon,'id':id,'id_car':id_car})
+    return render(request, 'parkinglot/one_button_page.html',{'lat':location_lat,'lon':location_lon,'id':id})
 
 
 def parkinglot_list(request):
-    # Query all posts
+   
     owned_park = Parkinglot.objects.all()
     print(owned_park)
-    ### test
-    
+
     return render(request, 'parkinglot/home.html', {'owned_park': owned_park})
 
 
 def info(request,id):
     parkinglot = Parkinglot.objects.get(id=id)
-    #cus = get_object_or_404(Parkinglot, id=id).customer
-    #cus = cus.values()
-
+    
     slot = Slot.objects.filter(parking=parkinglot)
     
     return render(request, 'parkinglot/park_info.html',{"slot":slot})
 
-def about(request):
-    return HttpResponse("About Page")
 
 def createParking(request):
     
@@ -68,37 +66,96 @@ def createParking(request):
 
 
 def booking(request,id):
-    free = get_object_or_404(Parkinglot, id=id).max_slot
+
     parking = Parkinglot.objects.get(id=id)
     slot = Slot.objects.filter(parking=parking,status=True)
     box = []
-    for i in slot:
-        box.append(i)
-        print("dddd",i)
-    x = box[0]
-    setStatus = Slot.objects.filter(id=x.id)
-    setStatus.update(status=False)
-    print(x)
+    if slot.exists(): #ถ้ามีที่จอดว่าง
+        for i in slot:
+            box.append(i)
+            print("dddd",i)
+    
+        x = box[0] #slot แรกสุด
+        if request.method == 'POST':
+            owned_park = Parkinglot.objects.get(id=id)
+
+            form = customerForm(request.POST, request.FILES)
+            setStatus = Slot.objects.filter(id=x.id)
+            
+            if form.is_valid():
+                name = request.POST["name"]
+                tel = request.POST["tel"]
+                c = Customer.objects.create(name=name,tel=tel)
+                #owned_park.customer.add(c)
+                print("pos2",x.id)
+                
+                setStatus.update(status=False)
+                setStatus.update(customer=c)
+                setStatus.update(start=datetime.now())
+                print("SSS",setStatus)
+                #owned_park.save()
+                #form.save()
+                return HttpResponseRedirect(reverse("parking_lot:list"))
+        else:
+            form = customerForm()
+        return render(request, 'parkinglot/booking.html', {'form': form,'id':id ,'slot':x.name,"slotid":x.id})
+    
+    else: #ที่จอดรถเต็ม
+        print("bae bae")
+        return render(request, 'parkinglot/booking.html', {'status': "full"})
+
+
+
+def checkout(request,id):
+    slot = Slot.objects.get(id=id)
+    timestart = slot.start
+    timeend = slot.end
+    timeend = datetime.now().time
+    cus = slot.customer.id
+    print(cus)
+    fee = 500
+    slot = Slot.objects.filter(id=id).update(status=True)
+    customer = Customer.objects.get(id=cus)
+    #customer.delete()
+    return render(request, 'parkinglot/checkout.html', {'start': timestart,'end':timeend,'customer':customer,'fee':fee})
+
+
+
+
+
+
+
+
+
+
+
+
+""" BACKUP
     if request.method == 'POST':
         owned_park = Parkinglot.objects.get(id=id)
 
         form = customerForm(request.POST, request.FILES)
-    
+        setStatus = Slot.objects.filter(id=x.id)
         if form.is_valid():
             name = request.POST["name"]
             tel = request.POST["tel"]
-            c = Customer.objects.create(name=name,tel=tel,slot=x)
+            c = Customer.objects.create(name=name,tel=tel)
             #owned_park.customer.add(c)
-            owned_park.save()
+            print("pos2",x.id)
+            
+            setStatus.update(status=False)
+            setStatus.update(customer=c)
+            print("SSS",setStatus)
+            #owned_park.save()
             #form.save()
             return HttpResponseRedirect(reverse("parking_lot:list"))
     else:
         form = customerForm()
         
-    return render(request, 'parkinglot/booking.html', {'form': form,'id':id})
+    return render(request, 'parkinglot/booking.html', {'form': form,'id':id ,'slot':x.name})
     
 
-"""
+
 def view_status(request):
     slot = []
     if 0 < Parkinglot.max_slot:
