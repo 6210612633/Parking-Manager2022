@@ -5,16 +5,36 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from .form import * 
 from django.urls import reverse
+from requests import get 
+import json
+
 # Create your views here.
 
-def one_button_book(request):
-    return render(request, 'parkinglot/one_button_page.html')
+def one_button_book(request,id):
+    parking = Parkinglot.objects.get(id=id)
+    parking_lat = parking.lat
+    parking_lon = parking.lon
+    location = get("http://ip-api.com/json")
+    location = location.json()
+    location_lat = location["lat"]
+    location_lon = location["lon"]
+    print(parking_lat)
+    
+    print("result",parking_lat-location_lat)
+    cond = 0
+    if(0 <= parking_lat-location_lat <= 3):
+        cond=1
+    
+    print(type(location))
+    return render(request, 'parkinglot/one_button_page.html',{'lat':location_lat,'lon':location_lon,'status':cond})
 
 
 def parkinglot_list(request):
     # Query all posts
     owned_park = Parkinglot.objects.all()
     print(owned_park)
+    ### test
+    
     return render(request, 'parkinglot/home.html', {'owned_park': owned_park})
 
 

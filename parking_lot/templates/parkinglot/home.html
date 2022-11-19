@@ -8,7 +8,10 @@
     {% for x in owned_park %}
     <li>
         <a href="{% url 'parking_lot:info' x.id %}">{{x.name}}</a>
+        
     </li>
     {% endfor %}
+    <a href="{% url 'parking_lot:one_button_book' %}">here</a>
+    {{ip}}
 </body>
 </html>

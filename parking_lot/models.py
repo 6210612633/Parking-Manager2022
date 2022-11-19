@@ -15,6 +15,9 @@ class Parkinglot(models.Model):
     parked = models.IntegerField(default=0)
     #customer = models.ManyToManyField(Customer)
     qr_link = models.CharField(max_length=200,null=True, blank=True)
+    lat = models.FloatField(default=0.00)
+    lon = models.FloatField(default=0.00)
+    
     
 
     def __str__(self):
