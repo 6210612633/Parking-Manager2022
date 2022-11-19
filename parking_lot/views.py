@@ -7,6 +7,9 @@ from .form import *
 from django.urls import reverse
 # Create your views here.
 
+def one_button_book(request):
+    return render(request, 'parkinglot/one_button_page.html')
+
 
 def parkinglot_list(request):
     # Query all posts
