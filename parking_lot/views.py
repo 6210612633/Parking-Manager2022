@@ -10,23 +10,21 @@ import json
 
 # Create your views here.
 
+id_car = 0 
+
 def one_button_book(request,id):
+    global id_car
     parking = Parkinglot.objects.get(id=id)
     parking_lat = parking.lat
-    parking_lon = parking.lon
+    #parking_lon = parking.lon
     location = get("http://ip-api.com/json")
     location = location.json()
     location_lat = location["lat"]
     location_lon = location["lon"]
-    print(parking_lat)
-    
-    print("result",parking_lat-location_lat)
-    cond = 0
-    if(0 <= parking_lat-location_lat <= 3):
-        cond=1
+    id_car += 1 
     
     print(type(location))
-    return render(request, 'parkinglot/one_button_page.html',{'lat':location_lat,'lon':location_lon,'status':cond})
+    return render(request, 'parkinglot/one_button_page.html',{'lat':location_lat,'lon':location_lon,'id':id,'id_car':id_car})
 
 
 def parkinglot_list(request):

@@ -5,24 +5,43 @@
 </head>
 <body>
     <button type="button" onclick="get_ip()">Book!</button>
-    <div>{{lat}}</div>
-    <div>{{lon}}</div>
-    <div>status:{{status}}</div>
-    {% if status == 1 %}
-        <button type="button">ยิงไปฟังก์ชันกูอะ ไปอัพเดตดาต้าว่ามีคนจอดแล้ว ดาต้าลูกค้าด้วยพวกเบอร์ไรงี้</button>
-    {% else %}
-        <div>can't book i kwai</div>
-    {%endif%}
+    <div><p hidden id = "lat">{{lat}}</p></div>
+    <div><p hidden id = "lon">{{lon}}</p></div>
+    <div><p hidden id = "id">{{id}}</p></div>
+    <div><p hidden id = "id_car">{{id_car}}</p></div>
 </body>
 </html>
 
 <script>
     ///get ip from api function
     async function get_ip() {
-        const response = await fetch('https://api.ipify.org?format=json');
+        const response = await fetch('http://ip-api.com/json');
         const data = await response.json();
-        var ip = data;
-        console.log(data); // debug to console
+        var ip = data.query;
+        console.log(ip); // debug to console
+        console.log(data.lat); // debug to console
+        console.log(data.lon); // debug to console
+
+        var lat = data.lat;
+        var lon = data.lon;
+
+        var server_lat = document.getElementById("lat").innerHTML;
+        var server_lon = document.getElementById("lon").innerHTML;
+        var id_car = document.getElementById("id_car").innerHTML;
+
+        /*if (lat == server_lat && lon == server_lon) {
+            alert("You are in the park!");
+        } else {
+            alert("You are not in the park!");
+        }
+        */
+
+        if (0 <= parseFloat(lat) - parseFloat(server_lat) <= 3 ){
+            alert("You are in the park!");
+            window.location.replace((window.location.href)+"book/"+ "id_car");
+        } else {
+            alert("You are not in the park!");
+        }
     }
 
 </script> 
