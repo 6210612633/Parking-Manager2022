@@ -14,7 +14,7 @@
   <meta name="author" content="" />
   <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
 
-  <title>Paspark</title>
+  <title>Parking Manager 2022</title>
 
 
   <!-- bootstrap core css -->
@@ -49,9 +49,9 @@
     <header class="header_section">
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
-          <a class="navbar-brand" href="index.html">
+          <a class="navbar-brand" href="http://localhost:8000/parking">
             <span>
-              Paspark
+              Parking Manager 2022
             </span>
           </a>
 
@@ -62,20 +62,15 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav  ">
               <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="http://localhost:8000/parking">Home <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="about.html"> About</a>
+                <a class="nav-link" href="http://localhost:8000/parking/mypark"> Your Parking lot</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="pricing.html">Pricing</a>
+                <a class="nav-link" href="http://localhost:8000/parking/create/">Create new</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="why.html">Why Us</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="testimonial.html">Testimonial</a>
-              </li>
+              
             </ul>
             <form class="form-inline">
               <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
@@ -106,10 +101,12 @@
                   <label for="">Select Parking</label>
                   <div class="input-group">
                     <select class="form-control">
-                      <option data-display="Highway Park">Highway Park</option>
-                      <option value="1">Highway Park</option>
-                      <option value="2">Highway Park</option>
-                      <option value="3">Highway Park</option>
+                      <option data-display="Availiable Parking lot">Availiable Parking lot</option>
+                      {% for i in parking %}
+                        
+                      <option >{{i}}</option>
+                      {% endfor %}
+                     
                     </select>
                   </div>
                 </div>

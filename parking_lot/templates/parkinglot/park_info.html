@@ -28,9 +28,9 @@
 </head>
 
 <body onload="init();">
-    <h1>Car Park</h1>
+    <h1>{{name}}</h1>
     {% for i in slot %}
-        <li>{{i}} --> status = {{i.status}} == {{i.customer}}</li>
+        <li>{{i.name}} --> status = {{i.status}} // customer name: {{i.customer}} (tel = {{i.customer.tel}})</li>
     {% endfor %}
     {% for x in customer %}
         <li>customer = {{ x.name }} parking at ... tel {{ x.tel }}</li>

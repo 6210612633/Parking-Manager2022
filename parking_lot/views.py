@@ -43,9 +43,10 @@ def info(request,id):
     parkinglot = Parkinglot.objects.get(id=id)
     park_lat = parkinglot.lat
     park_lon = parkinglot.lon
+    name = parkinglot.name
     slot = Slot.objects.filter(parking=parkinglot)
     
-    return render(request, 'parkinglot/park_info.html',{"slot":slot,"lat":park_lat,"lon":park_lon})
+    return render(request, 'parkinglot/park_info.html',{"slot":slot,"lat":park_lat,"lon":park_lon,"name":name})
 
 
 def createParking(request):
@@ -97,7 +98,7 @@ def booking(request,id):
                 print("SSS",setStatus)
                 #owned_park.save()
                 #form.save()
-                return HttpResponseRedirect(reverse("parking_lot:list"))
+                return HttpResponseRedirect(reverse("parking_lot:onpark"))
         else:
             form = customerForm()
         return render(request, 'parkinglot/booking.html', {'form': form,'id':id ,'slot':x.name,"slotid":x.id})
@@ -116,22 +117,48 @@ def checkout(request,id):
     cus = slot.customer.id
     print(cus)
     fee = 500
-    slot = Slot.objects.filter(id=id).update(status=True)
+    #slot = Slot.objects.filter(id=id).update(status=True)
     customer = Customer.objects.get(id=cus)
     #customer.delete()
-    return render(request, 'parkinglot/checkout.html', {'start': timestart,'end':timeend,'customer':customer,'fee':fee})
+    return render(request, 'parkinglot/checkout.html', {'start': timestart,'end':timeend,'customer':customer,'fee':fee,'slotnum':slot.id})
 
-
+def deleteData(request,id):
+    slot = Slot.objects.get(id=id)
+    
+    cus = slot.customer.id
+    slot = Slot.objects.filter(id=id).update(status=True)
+    customer = Customer.objects.get(id=cus)
+    customer.delete()
+    return HttpResponseRedirect(reverse("parking_lot:list"))
 
 def index(request):
-
-    return render(request, 'parkinglot/index.html')
-
-
-
+    parking = Parkinglot.objects.all()
+    print(len(parking))
+    return render(request, 'parkinglot/index.html',{'parking':parking,'len':len(parking)})
 
 
+def exit(request):
+    if request.method == 'POST':
+        form = customerForm(request.POST, request.FILES)
+        if form.is_valid():
+            #name = request.POST['name']
+            phone = request.POST['tel']
+            cus = Customer.objects.get(tel=phone)
+            slot  = Slot.objects.get(customer=cus)
+            timestart = slot.start
+            timeend = slot.end
+            timeend = datetime.now().time
+            print(cus)
+            print(slot.id)
+            #form.save()
 
+            return render(request, 'parkinglot/checkout.html', {'start': timestart,'end':timeend,'customer':cus,'fee':500,'slotnum':slot.id})
+    else:
+        form = customerForm()
+    return render(request, 'parkinglot/exit.html',{"form":form})
+
+def onpark(request):
+    return render(request, 'parkinglot/onpark.html')
 
 
 """ BACKUP

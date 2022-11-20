@@ -38,9 +38,9 @@ class Slot(models.Model):
     parking = models.ForeignKey(Parkinglot,on_delete=models.CASCADE)
     name = models.CharField(null=True,max_length=10)
     status = models.BooleanField(default=True)
-    customer = models.ForeignKey(Customer,on_delete=models.CASCADE,null=True,blank=True)
-    start = models.TimeField(auto_now=False,auto_now_add=False)
-    end = models.TimeField(auto_now=False,auto_now_add=False)
+    customer = models.ForeignKey(Customer,on_delete=models.SET_NULL,null=True,blank=True)
+    start = models.TimeField(auto_now=True,auto_now_add=False)
+    end = models.TimeField(auto_now=True,auto_now_add=False)
     
     def __str__(self):
         return f"{self.parking} slot {self.name} status ({self.status}) slotID= {self.id}"

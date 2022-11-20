@@ -10,14 +10,14 @@
         <div class="container">{% csrf_token %}
             {{ form.as_p}}
             <button type="submit" class="btn btn-primary" onclick="accept()">Save</button>
-            <button type="checkCookie" class="btn btn-primary" onclick="checkCookie()">Check Cookie</button>
+           
         </div>
     </form>
-    <p>You can leave textboxes empty and press "Save" to accept cookie</p>
-    {{slot}}
+    
+    <br>
 
-    <div class="display-4">status</div>
-    <div class="display-1" id = "slotid">{{slotid}}{{status}}</div>
+    <h2>Park Here</h2>
+    <div class="display-3" style="text-align: center" id= "slotid">{{slot}}</div>
    </div>
 </div>
 </div>

@@ -11,6 +11,9 @@ urlpatterns = [
     path('<int:id>/qr/',views.one_button_book,name='one_button_book'),
     path('logout/',views.one_button_logout,name='one_button_logout'),
     path('<int:id>/checkout',views.checkout,name='checkout'),
+    path('delete/<int:id>',views.deleteData,name='delete'),
+    path('exit/',views.exit,name='exit'),
     path('',views.index,name='index'),
+    path('ready/',views.onpark,name='onpark')
    
 ]
