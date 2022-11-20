@@ -12,7 +12,8 @@ from datetime import datetime
 
 # Create your views here.
 
-
+def one_button_logout(request):
+    return render(request, 'parkinglot/one_button_logout.html')
 
 def one_button_book(request,id):
     

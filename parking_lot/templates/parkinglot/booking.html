@@ -2,21 +2,40 @@
 {% extends "parkinglot/layout.html" %}
 {% load static %}
 {% block body %}
-
+<div class="container bg-light">
+    <div class="col-md-12 text-center">
     <h1>Booking</h1>
    <div>
     <form method="POST" action="." enctype="multipart/form-data">
         <div class="container">{% csrf_token %}
             {{ form.as_p}}
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary" onclick="accept()">Save</button>
+            <button type="checkCookie" class="btn btn-primary" onclick="checkCookie()">Check Cookie</button>
         </div>
     </form>
+    <p>You can leave textboxes empty and press "Save" to accept cookie</p>
     {{slot}}
 
-    <div>stautus{{status}}</div>
-    <div>ปุ่มไปหน้าจ่ายตัง เด๋วลิงค์</div>
-    <div>{{slotid}}</div>
+    <div class="display-4">status</div>
+    <div class="display-1" id = "slotid">{{slotid}}{{status}}</div>
    </div>
-
+</div>
+</div>
 
 {% endblock %}
+<script>
+    let status = document.getElementById("slotid").innerHTML;
+    function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+    function accept(){
+        setCookie("carid", document.getElementById("slotid").value, 1);
+    }
+    function checkCookie(){
+        alert(document.cookie);
+    }
+
+</script>

@@ -1,0 +1,41 @@
+{% extends "parkinglot/layout.html" %}
+{% load static %}
+{% block body %}
+<body>
+    <div class="container my-3 bg-light">
+        <div class="col-md-12 text-center">
+            <div class="display-1" id = "slotid"></div>
+            <button type="button" onclick="logout()" class="btn btn-primary">Checkout!</button>
+            <button type="button" onclick="get_cookie()" class="btn btn-primary">Check Cookie!</button>
+    </div>
+</div>
+</body>
+<script>
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+  return "";
+}
+    let carid = getCookie("carid");
+    document.getElementById("slotid").innerHTML = carid;
+
+    function logout(){
+        document.cookie = "carid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = window.location.href + carid
+    }
+    function get_cookie(){
+        alert(getCookie("carid"));
+    }
+</script>
+
+{% endblock %}
