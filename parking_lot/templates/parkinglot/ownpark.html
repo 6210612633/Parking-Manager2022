@@ -1,0 +1,11 @@
+{% extends "parkinglot/layout.html" %}
+{% load static %}
+{% block body %}
+<h1>Your Parking lot</h1>
+{% for x in owned_park %}
+<li>
+    <a href="{% url 'parking_lot:info' x.id %}">{{x.name}}</a>
+    
+</li>
+{% endfor %}
+{% endblock %}

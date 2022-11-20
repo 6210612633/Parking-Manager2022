@@ -4,11 +4,12 @@ from . import views
 
 app_name = 'parking_lot'
 urlpatterns = [
-    path('', views.parkinglot_list, name='list'),
+    path('mypark', views.parkinglot_list, name='list'),
     path('<int:id>', views.info, name='info'),
     path('<int:id>/booking/', views.booking, name='booking'),
     path('create/',views.createParking,name='create'),
     path('<int:id>/qr/',views.one_button_book,name='one_button_book'),
-    path('<int:id>/checkout',views.checkout,name='checkout')
+    path('<int:id>/checkout',views.checkout,name='checkout'),
+    path('',views.index,name='index'),
    
 ]

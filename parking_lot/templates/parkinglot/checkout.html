@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Your Car Park</title>
-</head>
+{% extends "parkinglot/layout.html" %}
+{% load static %}
+{% block body %}
 <body>
     <h1>Checkout</h1>
     <div>start : {{start}}</div>
@@ -11,4 +9,4 @@
     <div>fee : {{fee}}</div>
     <button>pay</button>
 </body>
-</html>
+{% endblock %}

@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Your Car Park</title>
-</head>
-<body>
+
+{% extends "parkinglot/layout.html" %}
+{% load static %}
+{% block body %}
+
     <h1>Booking</h1>
    <div>
     <form method="POST" action="." enctype="multipart/form-data">
@@ -19,5 +18,5 @@
     <div>{{slotid}}</div>
    </div>
 
-</body>
-</html>
+
+{% endblock %}

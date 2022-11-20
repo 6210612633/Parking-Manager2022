@@ -12,7 +12,7 @@ class customerForm(ModelForm):
 class createParkingLotForm(ModelForm):
     class Meta:
         model = Parkinglot 
-        fields = ['name','max_slot']
+        fields = ['name','max_slot','lat','lon']
 
 """
 class slotForm(forms.Form):

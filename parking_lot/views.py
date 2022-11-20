@@ -35,15 +35,16 @@ def parkinglot_list(request):
     owned_park = Parkinglot.objects.all()
     print(owned_park)
 
-    return render(request, 'parkinglot/home.html', {'owned_park': owned_park})
+    return render(request, 'parkinglot/ownpark.html', {'owned_park': owned_park})
 
 
 def info(request,id):
     parkinglot = Parkinglot.objects.get(id=id)
-    
+    park_lat = parkinglot.lat
+    park_lon = parkinglot.lon
     slot = Slot.objects.filter(parking=parkinglot)
     
-    return render(request, 'parkinglot/park_info.html',{"slot":slot})
+    return render(request, 'parkinglot/park_info.html',{"slot":slot,"lat":park_lat,"lon":park_lon})
 
 
 def createParking(request):
@@ -121,7 +122,9 @@ def checkout(request,id):
 
 
 
+def index(request):
 
+    return render(request, 'parkinglot/index.html')
 
 
 

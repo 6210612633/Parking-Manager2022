@@ -22,7 +22,8 @@
         var ip = data.query;
         console.log(ip); // debug to console
         console.log(data.lat); // debug to console
-        console.log(data.lon); // debug to console
+        console.log(data.lon); // debug to 
+        console.log(data)
 
         var lat = data.lat;
         var lon = data.lon;
@@ -38,7 +39,7 @@
         }
         */
 
-        if (0 <= parseFloat(lat) - parseFloat(server_lat) <= 3 ){
+        if (0 <= parseFloat(lat) - parseFloat(server_lat) <= 1 ){
             alert("You are in the park!");
             window.location.replace("http://localhost:8000/parking/"+id+"/booking/");
         } else {
